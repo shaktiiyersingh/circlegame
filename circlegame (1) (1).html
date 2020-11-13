@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+<title>Simple Canvas Example</title>
+<style>
+canvas {
+    border: 3px #CCC solid;
+}
+</style>
+</head>
+ 
+<body>
+<div id="container">
+    <canvas id="myCanvas" onclick = "toggle()" height="450" width="1000"></canvas>
+</div>
+
+<div>
+<input type = "text" id = "score" value = "click above to start">
+</div>
+<script>
+var status = "0";
+var globalID; 
+var score;
+ var mainCanvas = document.querySelector("#myCanvas");
+var mainContext1 = mainCanvas.getContext("2d");
+var mainContext2 = mainCanvas.getContext("2d"); 
+var canvasWidth = mainCanvas.width;
+var canvasHeight = mainCanvas.height;
+
+
+var angle = 0;
+ 
+var requestAnimationFrame = window.requestAnimationFrame || 
+                            window.mozRequestAnimationFrame || 
+                            window.webkitRequestAnimationFrame || 
+                            window.msRequestAnimationFrame;
+function toggle()
+{
+
+if (status == "0")
+	{
+
+		//document.getElementByID('score').value = "";
+		globalID = requestAnimationFrame(drawCircles);
+		status = "1";
+		
+	}
+else 
+	{
+
+		cancelAnimationFrame(globalID);
+		status = "0";
+alert(score);
+		document.getElementByID('score').value = score;
+
+	}
+
+}
+
+
+function drawCircles() {
+ mainContext1.clearRect(0, 0, canvasWidth, canvasHeight);
+ mainContext2.clearRect(0, 0, canvasWidth, canvasHeight);     
+    // color in the background
+    mainContext1.fillStyle = "red";
+    mainContext1.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    mainContext2.fillStyle = "red";
+    mainContext2.fillRect(0, 0, canvasWidth, canvasHeight);
+   // draw the circle
+    mainContext1.beginPath();
+    mainContext2.beginPath();
+     
+
+    var radius1 = 25 + 150 * Math.abs(Math.cos(angle));
+    mainContext1.arc(225, 225, radius1, 0, Math.PI * 2, false);
+    mainContext1.closePath();
+
+    var radius2 = 175 - 150 * Math.abs(Math.cos(angle));
+    mainContext2.arc(775, 225, radius2, 0, Math.PI * 2, false);
+    mainContext2.closePath();
+     
+    // color in the circle
+    mainContext1.fillStyle = "black";
+    mainContext1.fill();
+
+    mainContext2.fillStyle = "black";
+    mainContext2.fill();
+
+ angle += Math.PI / 64;
+score = Math.round(100 -  100*(Math.abs(radius1 - radius2))/150);
+
+ globalID = requestAnimationFrame(drawCircles);
+}
+
+//drawCircles();
+</script>
+</body>
+</html>
